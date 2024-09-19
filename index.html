@@ -40,7 +40,7 @@
         $("#process").on("click", function() {
             console.log("Processing.")
             let input_data = $("#input-data").val()
-            let raw = "Name, Email\n";
+            let raw = "First, Last, Email\n";
 
             // Take the data and process it
             let names = input_data.split(";");
@@ -51,11 +51,14 @@
                     
                     names[name_index][0] = names[name_index][0].trim()
                     names[name_index][1] = names[name_index][1].slice(0,-1);
-                    console.log(names[name_index])
 
-                    raw += `${names[name_index][0]}, ${names[name_index][1]}\n`;
+                    let name_data = names[name_index][0].split(" ");
+                    let first_name = name_data.shift();
+                    let last_name = name_data.join(" ");
+
+                    raw += `${first_name}, ${last_name}, ${names[name_index][1]}\n`;
                 } catch {
-                    //continue;
+                    continue;
                 }
             }
 
