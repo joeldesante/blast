@@ -16,7 +16,7 @@
     <header>
         <h1>Blast Data</h1>
     </header>
-    <br><br>
+    <br>
     <main>
         <section>
             <label for="input-data">Enter your VAN data here:</label>
@@ -40,7 +40,7 @@
         $("#process").on("click", function() {
             console.log("Processing.")
             let input_data = $("#input-data").val()
-            let raw = "";
+            let raw = "First Name, Last Name, Email\n";
 
             // Take the data and process it
             let names = input_data.split(";");
