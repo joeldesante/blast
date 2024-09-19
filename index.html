@@ -40,19 +40,22 @@
         $("#process").on("click", function() {
             console.log("Processing.")
             let input_data = $("#input-data").val()
-            let raw = "First Name, Last Name, Email\n";
+            let raw = "Name, Email\n";
 
             // Take the data and process it
             let names = input_data.split(";");
             for(let name_index = 0; name_index < names.length; name_index++) {
                 try {
                     names[name_index] = names[name_index].trim();
-                    names[name_index] = names[name_index].split(" ");
-                    names[name_index][2] = names[name_index][2].slice(1,-1);
+                    names[name_index] = names[name_index].split("<");
+                    
+                    names[name_index][0] = names[name_index][0].trim()
+                    names[name_index][1] = names[name_index][1].slice(0,-1);
+                    console.log(names[name_index])
 
-                    raw += `${names[name_index][0]}, ${names[name_index][1]}, ${names[name_index][2]}\n`;
+                    raw += `${names[name_index][0]}, ${names[name_index][1]}\n`;
                 } catch {
-                    continue;
+                    //continue;
                 }
             }
 
