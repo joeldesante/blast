@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blast Data | DeSante Tools</title>
+
+    <style>
+        section {
+            display: flex;
+            flex-flow: column;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Blast Data</h1>
+    </header>
+    <br><br>
+    <main>
+        <section>
+            <label for="input-data">Enter your VAN data here:</label>
+            <textarea name="input-data" id="input-data" rows="20" placeholder="Enter VAN data here"></textarea>
+            <br>
+            <button id="process">Process Data</button>
+        </section>
+        <hr>
+        <br>
+        <br>
+        <section>
+            <label for="output-raw">Data Output</label>
+            <textarea name="output-raw" id="output-raw" rows="15" readonly></textarea>
+            <button id="download">Download CSV File</button>
+        </section>
+    </main>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $("#process").on("click", function() {
+            console.log("Processing.")
+            let input_data = $("#input-data").val()
+            let raw = "";
+
+            // Take the data and process it
+            let names = input_data.split(";");
+            for(let name_index = 0; name_index < names.length; name_index++) {
+                try {
+                    names[name_index] = names[name_index].trim();
+                    names[name_index] = names[name_index].split(" ");
+                    names[name_index][2] = names[name_index][2].slice(1,-1);
+
+                    raw += `${names[name_index][0]}, ${names[name_index][1]}, ${names[name_index][2]}\n`;
+                } catch {
+                    continue;
+                }
+            }
+
+            $("#output-raw").val(raw);
+            
+            // -- Download Button
+
+            function download(file) {
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(file);
+
+                link.href = url;
+                link.download = file.name;
+                document.body.appendChild(link);
+                link.click();
+
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            }
+
+            $("#download").on("click", function() {
+                // Gen file
+                const file = new File([$("#output-raw").val()], `output-${Date.now()}.csv`, {
+                    type: 'text/csv',
+                })
+
+                // Initiate Download
+                download(file);
+            });
+
+        });
+    </script>
+</body>
+</html>
